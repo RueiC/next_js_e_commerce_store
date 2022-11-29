@@ -21,10 +21,12 @@ interface defaultValue {
   incQty: () => void;
   decQty: () => void;
   clearCart: () => void;
+  // eslint-disable-next-line no-unused-vars
   updateQty: (product: Product, amount: number) => void;
+  // eslint-disable-next-line no-unused-vars
   addToCart: (product: Product, qty: number) => void;
   setShowCart: Dispatch<SetStateAction<boolean>>;
-  setUser: Dispatch<React.SetStateAction<null>>;
+  setUser: Dispatch<React.SetStateAction<User | null>>;
   getUser: () => Promise<void>;
 }
 
