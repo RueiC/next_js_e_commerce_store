@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -36,7 +37,11 @@ export type CommentType = {
 export type Product = {
   _id: string;
   name: string;
-  image: SanityImage;
+  image: {
+    asset: {
+      url: string;
+    };
+  };
   slug: {
     _type: string;
     current: string;
