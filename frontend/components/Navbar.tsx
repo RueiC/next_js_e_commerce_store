@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { BiCategory, BiLogOutCircle } from 'react-icons/bi';
 import {
   AiOutlineShoppingCart,
@@ -24,11 +24,11 @@ const Navbar: FC = () => {
   // const [searchTerm, setSearchTerm] = useState<string>("");
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
-  const handleSearch = (query: string): void => {
-    console.log(query);
-  };
+  // const handleSearch = (query: string): void => {
+  //   console.log(query);
+  // };
 
-  const submitSearch = (): void => {};
+  // const submitSearch = (): void => {};
 
   const logout = async (): Promise<void> => {
     await axios.get('/api/logout').then(() => setUser(null));
@@ -43,7 +43,7 @@ const Navbar: FC = () => {
               <img className='w-full h-full' src={image.logo_1} alt='logo' />
             </Link>
           </div>
-          <div className='w-[28rem] h-[5rem]'>
+          {/* <div className='w-[28rem] h-[5rem]'>
             <input
               className='bg-white text-text-1 rounded-[1.5rem] w-full h-full shadow-md placeholder:text-[1.5rem] px-[2rem] outline-none'
               placeholder='搜尋'
@@ -53,7 +53,7 @@ const Navbar: FC = () => {
               }
               onSubmit={submitSearch}
             />
-          </div>
+          </div> */}
           <div className='w-[15rem] h-full hover:scale-105 transition-all duration-200 ease-in-out'>
             <Link href='/products'>
               <button
@@ -137,7 +137,7 @@ const Navbar: FC = () => {
               瀏覽商品
             </button>
 
-            <form className='w-full h-full'>
+            {/* <form className='w-full h-full'>
               <input
                 className='bg-white text-text-1 rounded-[1.5rem] w-full h-[5rem] shadow-sm placeholder:text-[1.5rem] px-[2rem] outline-none'
                 placeholder='搜尋'
@@ -147,7 +147,7 @@ const Navbar: FC = () => {
                 }
                 onSubmit={submitSearch}
               />
-            </form>
+            </form> */}
           </div>
         )}
       </header>
