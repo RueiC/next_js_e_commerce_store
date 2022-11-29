@@ -2,14 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  distDir: 'out',
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ['lh3.googleusercontent.com'],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-        port: "",
-        pathname: "/images/**",
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/images/**',
       },
     ],
   },
