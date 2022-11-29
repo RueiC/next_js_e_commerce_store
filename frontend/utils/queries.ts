@@ -113,73 +113,73 @@ export const filteredByOptions = (
   countryOption: string,
   amountOption: string,
   sortOption: string,
-  searchOption: string
+  searchOption: string,
 ): string => {
   const countryOptions = (countryOption: string): string => {
     switch (countryOption) {
-      case "澳洲":
+      case '澳洲':
         return ` && country == "澳洲"`;
 
-      case "美國":
+      case '美國':
         return ` && country == "美國"`;
 
-      case "泰國":
+      case '泰國':
         return ` && country == "泰國"`;
 
-      case "台灣":
+      case '台灣':
         return ` && country == "台灣"`;
 
       default:
-        return "";
+        return '';
     }
   };
 
   const amountOptions = (amountOption: string): string => {
     switch (amountOption) {
-      case "不限":
-        return "";
+      case '不限':
+        return '';
 
-      case "< 10g":
-        return " && amount < 10";
+      case '< 10g':
+        return ' && amount < 10';
 
-      case "10g - 60g":
-        return " && 10 < amount < 60";
+      case '10g - 60g':
+        return ' && 10 < amount < 60';
 
-      case "60g - 200g":
-        return " && 60 < amount < 200";
+      case '60g - 200g':
+        return ' && 60 < amount < 200';
 
-      case "> 200g":
-        return " && amount > 200";
+      case '> 200g':
+        return ' && amount > 200';
 
       default:
-        return "";
+        return '';
     }
   };
 
   const sortOptions = (sortOption: string): string => {
     switch (sortOption) {
-      case "價格由高到低":
+      case '價格由高到低':
         return `| order(price desc)`;
 
-      case "價格由低到高":
+      case '價格由低到高':
         return `| order(price asc)`;
 
-      case "由新到舊":
+      case '由新到舊':
         return `| order(_createdAt desc)`;
 
-      case "由舊到新":
+      case '由舊到新':
         return `| order(_createdAt asc)`;
 
       default:
-        return "";
+        return '';
     }
   };
 
   const query: string = `
     *[_type == "product"${countryOptions(countryOption)}${amountOptions(
-    amountOption
+    amountOption,
   )}${
-    searchOption !== "" ? ` && name match '${searchOption}'` : ""
+    searchOption !== '' ? ` && name match '${searchOption}'` : ''
   }] ${sortOptions(sortOption)}{
       image {
         asset->{
@@ -197,8 +197,6 @@ export const filteredByOptions = (
       isDiscount,
       discountPrice,
     }`;
-
-  console.log(query);
 
   return query;
 };

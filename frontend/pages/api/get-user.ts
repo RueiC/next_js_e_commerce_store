@@ -9,7 +9,7 @@ const getUser = async (
   if (cookies.currentUser) {
     res.status(200).json({ message: '成功!', body: cookies.currentUser });
   } else {
-    res.status(400).json({ message: '尚未登入' });
+    res.status(200).json({ message: '尚未登入', body: null });
   }
 };
 

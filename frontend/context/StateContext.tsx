@@ -31,7 +31,7 @@ interface defaultValue {
 const Context = createContext({} as defaultValue);
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [showCart, setShowCart] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<Product[]>([]);
   const [qty, setQty] = useState<number>(1);
