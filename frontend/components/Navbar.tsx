@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 import { BiCategory, BiLogOutCircle } from 'react-icons/bi';
 import {
   AiOutlineShoppingCart,
@@ -25,6 +25,7 @@ const Navbar: FC = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
+  const [stickNavStyle, setStickNavStyle] = useState<string>('');
 
   const submitSearch = (searchTerm: string): void => {
     if (!router || searchTerm === '') return;
@@ -36,9 +37,21 @@ const Navbar: FC = () => {
     await axios.get('/api/logout').then(() => setUser(null));
   };
 
+  useEffect(() => {
+    window.addEventListener<'scroll'>('scroll', (): void => {
+      if (window.scrollY > 800)
+        setStickNavStyle('fixed top-0 left-0 right-0 w-full z-50 shadow-lg');
+      else setStickNavStyle('');
+    });
+
+    return () => window.removeEventListener('scroll', (): void => {});
+  }, []);
+
   return (
     <>
-      <header className='md:flex md:items-center md:justify-between px-[3rem] py-[3.5rem] hidden'>
+      <header
+        className={`${stickNavStyle} md:flex md:items-center md:justify-between px-[3rem] py-[3.5rem] hidden bg-background-brown-1`}
+      >
         <div className='flex justify-start items-center gap-10'>
           <div className='w-[17.5rem] h-[8.5rem] cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out'>
             <Link href='/'>
@@ -183,7 +196,7 @@ const Navbar: FC = () => {
 
       {!showNavbar && (
         <div
-          className={`relative flex md:hidden items-center justify-between w-full px-[2.5rem] py-[3rem] text-text-3 font-medium`}
+          className={`${stickNavStyle} flex md:hidden items-center justify-between w-full px-[2.5rem] py-[3rem] text-text-3 font-medium bg-background-brown-1`}
         >
           <img
             className='w-[17.5rem] h-[8.5rem] cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out'
