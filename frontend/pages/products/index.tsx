@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { GetStaticProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { Product } from '../../types';
 import { GoodsLayout } from '../../components';
 import { getProducts } from '../../utils/queries';
@@ -31,6 +32,7 @@ const Browse: NextPage<Props> = ({ data }) => {
   const [sortOption, setSortOption] = useState<string>('無');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [products, setProducts] = useState<Product[]>(data);
+  const router = useRouter();
 
   const sendQuery = async (
     country: string,
@@ -49,6 +51,14 @@ const Browse: NextPage<Props> = ({ data }) => {
     sendQuery(countryOption, amountOption, sortOption, searchQuery);
   }, [countryOption, amountOption, sortOption, searchQuery]);
 
+  useEffect(() => {
+    if (!router) return;
+
+    const query = router.query.query as string;
+
+    if (query) setSearchQuery(query);
+  }, [router]);
+
   return (
     <div className='flex gap-[8rem] justify-center px-[5rem] md:px-[16rem]'>
       <div className='md:flex flex-col gap-[4.5rem] justify-start w-[32.5rem] hidden'>
@@ -56,9 +66,10 @@ const Browse: NextPage<Props> = ({ data }) => {
         <div className='flex flex-col gap-[2rem]'>
           <p className='block text-[2rem] text-text-2'>產地</p>
           <input
-            className='block w-[32rem] h-[5rem] bg-white border-2 rounded-[1.2rem] px-6 outline-none'
+            className='block w-[32rem] h-[5rem] bg-white border-2 rounded-[1.2rem] px-6 outline-none text-black/60'
             type='text'
             placeholder='品牌名稱'
+            value={searchQuery}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setSearchQuery(e.target.value)
             }

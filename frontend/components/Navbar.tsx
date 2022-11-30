@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { BiCategory, BiLogOutCircle } from 'react-icons/bi';
 import {
   AiOutlineShoppingCart,
@@ -7,6 +7,7 @@ import {
 } from 'react-icons/ai';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   CredentialResponse,
   GoogleLogin,
@@ -21,14 +22,15 @@ import ShoppingCart from './ShoppingCart';
 const Navbar: FC = () => {
   const { user, setUser, showCart, setShowCart, totalQty, getUser } =
     useStateContext();
-  // const [searchTerm, setSearchTerm] = useState<string>("");
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
-  // const handleSearch = (query: string): void => {
-  //   console.log(query);
-  // };
+  const submitSearch = (searchTerm: string): void => {
+    if (!router || searchTerm === '') return;
 
-  // const submitSearch = (): void => {};
+    router.push(`/products?query=${searchTerm}`);
+  };
 
   const logout = async (): Promise<void> => {
     await axios.get('/api/logout').then(() => setUser(null));
@@ -43,17 +45,22 @@ const Navbar: FC = () => {
               <img className='w-full h-full' src={image.logo_1} alt='logo' />
             </Link>
           </div>
-          {/* <div className='w-[28rem] h-[5rem]'>
+          <form
+            className='w-[28rem] h-[5rem]'
+            onSubmit={(e: FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              submitSearch(searchTerm);
+            }}
+          >
             <input
               className='bg-white text-text-1 rounded-[1.5rem] w-full h-full shadow-md placeholder:text-[1.5rem] px-[2rem] outline-none'
               placeholder='搜尋'
               type='text'
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleSearch(e.target.value)
+                setSearchTerm(e.target.value)
               }
-              onSubmit={submitSearch}
             />
-          </div> */}
+          </form>
           <div className='w-[15rem] h-full hover:scale-105 transition-all duration-200 ease-in-out'>
             <Link href='/products'>
               <button
@@ -129,25 +136,47 @@ const Navbar: FC = () => {
               />
             </div>
 
-            <button
-              className='flex items-center gap-[0.75rem] justify-center w-[15rem] h-full hover:scale-105 transition-all duration-200 ease-in-out text-[2rem] text-text-3 bg-white px-[2rem] py-[1rem] rounded-[1rem] shadow-sm'
-              type='button'
+            <form
+              className='w-full h-[5rem]'
+              onSubmit={(e: FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+                submitSearch(searchTerm);
+              }}
             >
-              <BiCategory />
-              瀏覽商品
-            </button>
-
-            {/* <form className='w-full h-full'>
               <input
-                className='bg-white text-text-1 rounded-[1.5rem] w-full h-[5rem] shadow-sm placeholder:text-[1.5rem] px-[2rem] outline-none'
+                className='bg-white text-text-1 rounded-[1.5rem] w-full h-full shadow-md placeholder:text-[1.5rem] px-[2rem] outline-none'
                 placeholder='搜尋'
                 type='text'
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleSearch(e.target.value)
+                  setSearchTerm(e.target.value)
                 }
-                onSubmit={submitSearch}
               />
-            </form> */}
+            </form>
+
+            {!user ? (
+              <GoogleLogin
+                onSuccess={async (res: CredentialResponse) => {
+                  await createOrGetUser(res);
+                  await getUser();
+                }}
+                onError={() => console.log('Login Failed')}
+              />
+            ) : (
+              <button
+                className={`flex items-center gap-3 justify-center h-full text-[1.5rem] shadow-md px-[3rem] rounded-[1.5rem] bg-white ${
+                  !showCart &&
+                  'hover:scale-105 transition-all duration-200 ease-in-out'
+                }`}
+                type='button'
+                onClick={() => {
+                  googleLogout();
+                  logout();
+                }}
+              >
+                <BiLogOutCircle className='text-[2rem]' />
+                登出
+              </button>
+            )}
           </div>
         )}
       </header>
@@ -162,6 +191,15 @@ const Navbar: FC = () => {
             alt='logo'
           />
           <div className='flex items-center gap-[2rem]'>
+            <Link href='/products'>
+              <button
+                className='flex items-center gap-[0.75rem] justify-center w-[15rem] h-full hover:scale-105 transition-all duration-200 ease-in-out text-[2rem] text-text-3 bg-white px-[2rem] py-[1rem] rounded-[1rem] shadow-sm'
+                type='button'
+              >
+                <BiCategory />
+                瀏覽商品
+              </button>
+            </Link>
             <button
               className={`flex items-center gap-3 justify-center h-full text-[1.5rem] shadow-md px-[2rem] py-[1.5rem] rounded-[1.5rem] bg-white ${
                 !showCart &&
