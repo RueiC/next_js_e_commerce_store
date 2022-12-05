@@ -5,8 +5,8 @@ import { Product } from '../../types';
 import { GoodsLayout } from '../../components';
 import { getProducts } from '../../utils/queries';
 import { client } from '../../utils/client';
-import { filteredByOptions } from '../../utils/queries';
 import { countries, amounts, sorting } from '../../utils/data';
+import useSendQuery from '../../hooks/useSendQuery';
 
 interface ServerSideProps {
   props: {
@@ -34,28 +34,17 @@ const Browse: NextPage<Props> = ({ data }) => {
   const [products, setProducts] = useState<Product[]>(data);
   const router = useRouter();
 
-  const sendQuery = async (
-    country: string,
-    amount: string,
-    sort: string,
-    search: string,
-  ): Promise<void> => {
-    const filteredResult: Product[] = await client.fetch(
-      filteredByOptions(country, amount, sort, search),
-    );
-
-    setProducts(filteredResult);
-  };
-
-  useEffect(() => {
-    sendQuery(countryOption, amountOption, sortOption, searchQuery);
-  }, [countryOption, amountOption, sortOption, searchQuery]);
+  useSendQuery({
+    countryOption,
+    amountOption,
+    sortOption,
+    searchQuery,
+    setProducts,
+  });
 
   useEffect(() => {
     if (!router) return;
-
     const query = router.query.query as string;
-
     if (query) setSearchQuery(query);
   }, [router]);
 
@@ -190,7 +179,7 @@ const Browse: NextPage<Props> = ({ data }) => {
           </div>
         </div>
 
-        {products && <GoodsLayout products={products} />}
+        {products ? <GoodsLayout products={products} /> : null}
       </div>
     </div>
   );

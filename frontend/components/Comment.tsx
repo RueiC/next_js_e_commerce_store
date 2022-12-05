@@ -23,7 +23,7 @@ const Comment = (props: CommentProps) => {
 
   return (
     <>
-      {props.comment && (
+      {props?.comment ? (
         <m.div
           className='relative flex w-full h-[16.8rem] rounded-[2rem] bg-white px-[4rem] py-[2.5rem]'
           whileInView={{ opacity: [0, 1], y: [100, 0] }}
@@ -55,14 +55,15 @@ const Comment = (props: CommentProps) => {
 
           <RiDoubleQuotesL className='absolute right-[3rem] text-[3rem] opacity-50 text-text-2' />
           <div className='absolute flex items-center right-[3rem] bottom-[3rem] text-[2rem]'>
-            {props.rating &&
-              [...Array(props.rating)].map((star, i) => (
-                <AiFillStar
-                  className='text-asparagus-3 text-[2.5rem]'
-                  key={i}
-                />
-              ))}
-            {props.postedBy._id === user?._id && (
+            {props.rating
+              ? [...Array(props.rating)].map((star, i) => (
+                  <AiFillStar
+                    className='text-asparagus-3 text-[2.5rem]'
+                    key={i}
+                  />
+                ))
+              : null}
+            {props.postedBy._id === user?._id ? (
               <div
                 className='flex items-center justify-center p-[1rem] bg-red-400 rounded-full ml-[1.5rem] opacity-80 hover:scale-105 hover:opacity-100 duration-100 ease-linear cursor-pointer'
                 onClick={() =>
@@ -75,10 +76,10 @@ const Comment = (props: CommentProps) => {
               >
                 <AiFillDelete className='text-white text-[2rem]' />
               </div>
-            )}
+            ) : null}
           </div>
         </m.div>
-      )}
+      ) : null}
     </>
   );
 };

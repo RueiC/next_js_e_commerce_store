@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import { BiCategory, BiLogOutCircle } from 'react-icons/bi';
 import {
   AiOutlineShoppingCart,
@@ -18,6 +18,7 @@ import { createOrGetUser } from '../utils/getAuthInfo';
 import { useStateContext } from '../context/StateContext';
 import image from '../assets/index';
 import ShoppingCart from './ShoppingCart';
+import useScroll from '../hooks/useScroll';
 
 const Navbar: FC = () => {
   const { user, setUser, showCart, setShowCart, totalQty, getUser } =
@@ -25,7 +26,7 @@ const Navbar: FC = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showNavbar, setShowNavbar] = useState<boolean>(false);
-  const [stickNavStyle, setStickNavStyle] = useState<string>('');
+  const stickNavStyle = useScroll();
 
   const submitSearch = (searchTerm: string): void => {
     if (!router || searchTerm === '') return;
@@ -37,22 +38,12 @@ const Navbar: FC = () => {
     await axios.get('/api/logout').then(() => setUser(null));
   };
 
-  useEffect(() => {
-    window.addEventListener<'scroll'>('scroll', (): void => {
-      if (window.scrollY > 800)
-        setStickNavStyle('fixed top-0 left-0 right-0 w-full z-50 shadow-lg');
-      else setStickNavStyle('');
-    });
-
-    return () => window.removeEventListener('scroll', (): void => {});
-  }, []);
-
   return (
     <>
       <header
         className={`${stickNavStyle} md:flex md:items-center md:justify-between px-[3rem] py-[3.5rem] hidden bg-background-brown-1`}
       >
-        <div className='flex justify-start items-center gap-10'>
+        <div className='flex items-center justify-start gap-10'>
           <div className='w-[17.5rem] h-[8.5rem] cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out'>
             <Link href='/'>
               <img className='w-full h-full' src={image.logo_1} alt='logo' />
@@ -126,7 +117,7 @@ const Navbar: FC = () => {
             <span className='text-3xl'>{totalQty}</span>
           </button>
 
-          {showCart && <ShoppingCart mode={'desktop'} />}
+          {showCart ? <ShoppingCart mode={'desktop'} /> : null}
         </div>
       </header>
 
@@ -135,7 +126,7 @@ const Navbar: FC = () => {
           showNavbar && 'translate-y-0'
         }`}
       >
-        {showNavbar && (
+        {showNavbar ? (
           <div className='flex flex-col justify-start items-start gap-[4rem]'>
             <div className='flex items-center justify-between w-full'>
               <img
@@ -191,10 +182,10 @@ const Navbar: FC = () => {
               </button>
             )}
           </div>
-        )}
+        ) : null}
       </header>
 
-      {!showNavbar && (
+      {!showNavbar ? (
         <div
           className={`${stickNavStyle} flex md:hidden items-center justify-between w-full px-[2.5rem] py-[3rem] text-text-3 font-medium bg-background-brown-1`}
         >
@@ -234,9 +225,9 @@ const Navbar: FC = () => {
             />
           </div>
 
-          {showCart && <ShoppingCart mode={'mobile'} />}
+          {showCart ? <ShoppingCart mode={'mobile'} /> : null}
         </div>
-      )}
+      ) : null}
     </>
   );
 };

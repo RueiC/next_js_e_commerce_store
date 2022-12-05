@@ -30,11 +30,11 @@ const Good = ({ product }: { product: Product }) => {
         />
       </div>
 
-      {product.isDiscount && (
+      {product.isDiscount ? (
         <div className='absolute top-[7.5rem] right-[3rem] flex items-center justify-center rotate-6 bg-red-500 text-white px-4 py-2 rounded-[1rem] font-bold'>
           ON SALE
         </div>
-      )}
+      ) : null}
 
       <div className='absolute left-[3.5rem] bottom-[3.5rem]'>
         <p className='mb-10 text-[2rem] font-medium text-text-3'>
@@ -68,11 +68,11 @@ const Good = ({ product }: { product: Product }) => {
           >
             {`$ ${product.price}`}
           </span>
-          {product.isDiscount && (
+          {product.isDiscount ? (
             <span className='text-red-600 text-[2.2rem] font-bold'>
               {`$ ${product.discountPrice}`}
             </span>
-          )}
+          ) : null}
           <span className='text-[1.5rem] font-medium text-gray-400'>
             {`/ ${product.amount} g`}
           </span>
