@@ -66,6 +66,11 @@ export default {
       type: 'number',
     },
     {
+      name: 'rating',
+      title: 'Rating',
+      type: 'number',
+    },
+    {
       name: 'comments',
       title: 'Comments',
       type: 'array',

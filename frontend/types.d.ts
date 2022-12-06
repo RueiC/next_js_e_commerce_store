@@ -51,6 +51,7 @@ export type Product = {
   price: number;
   discountPrice: number | null;
   qty: number;
+  rating: number;
 };
 
 export interface ProductDetail extends Product {

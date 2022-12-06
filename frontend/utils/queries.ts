@@ -42,7 +42,8 @@ export const getProducts: string = `
   amount,
   isDiscount,
   discountPrice,
-  qty
+  qty,
+  rating
 }
 `;
 
@@ -66,6 +67,7 @@ export const getDiscountProducts: string = `
   amount,
   isDiscount,
   discountPrice,
+  rating
 }
 `;
 
@@ -83,6 +85,7 @@ export const getTopTenNewProducts: string = `
   amount,
   isDiscount,
   discountPrice,
+  rating
 }[0...10]
 `;
 
@@ -105,6 +108,7 @@ export const getProduct = (productId: string): string => {
         isDiscount,
         discountPrice,
         qty,
+        rating
     }`;
   return query;
 };
@@ -196,6 +200,7 @@ export const filteredByOptions = (
       country,
       isDiscount,
       discountPrice,
+      rating
     }`;
 
   return query;

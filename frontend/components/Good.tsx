@@ -55,7 +55,7 @@ const Good = ({ product }: { product: Product }) => {
       <div className='flex flex-col items-end justify-between'>
         <div className='flex items-center gap-3 text-asparagus-3'>
           <AiFillStar className='text-[1.8rem] text-bold' />
-          <span className='text-[1.8rem] font-medium'>5/5</span>
+          <span className='text-[1.8rem] font-medium'>{product.rating}/5</span>
         </div>
 
         <div className='flex flex-col items-end'>
